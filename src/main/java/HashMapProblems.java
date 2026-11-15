@@ -40,11 +40,11 @@ public class HashMapProblems {
     }
 
     public static void run() {
-        IO.println("===== HASHMAPS =====");
-        IO.println("twoSum([2, 7, 11, 15], 9) = " + Arrays.toString(twoSum(new int[]{2, 7, 11, 15}, 9)));
-        IO.println("twoSum([3, 2, 4], 6) = " + Arrays.toString(twoSum(new int[]{3, 2, 4}, 6)));
-        IO.println("firstUniqueChar(\"swiss\") = " + firstUniqueChar("swiss"));
-        IO.println("firstUniqueChar(\"aabb\") = " + firstUniqueChar("aabb"));
-        IO.println();
+        System.out.println("===== HASHMAPS =====");
+        System.out.println("twoSum([2, 7, 11, 15], 9) = " + Arrays.toString(twoSum(new int[]{2, 7, 11, 15}, 9)));
+        System.out.println("twoSum([3, 2, 4], 6) = " + Arrays.toString(twoSum(new int[]{3, 2, 4}, 6)));
+        System.out.println("firstUniqueChar(\"swiss\") = " + firstUniqueChar("swiss"));
+        System.out.println("firstUniqueChar(\"aabb\") = " + firstUniqueChar("aabb"));
+        System.out.println();
     }
 }

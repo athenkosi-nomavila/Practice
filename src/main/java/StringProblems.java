@@ -53,12 +53,12 @@ public class StringProblems {
     }
 
     public static void run() {
-        IO.println("===== STRINGS =====");
-        IO.println("reverse(\"hello\") = " + reverse("hello"));
-        IO.println("isPalindrome(\"A man, a plan, a canal: Panama\") = "
+        System.out.println("===== STRINGS =====");
+        System.out.println("reverse(\"hello\") = " + reverse("hello"));
+        System.out.println("isPalindrome(\"A man, a plan, a canal: Panama\") = "
                 + isPalindrome("A man, a plan, a canal: Panama"));
-        IO.println("isPalindrome(\"race a car\") = " + isPalindrome("race a car"));
-        IO.println("countVowels(\"Technical Assessment\") = " + countVowels("Technical Assessment"));
-        IO.println();
+        System.out.println("isPalindrome(\"race a car\") = " + isPalindrome("race a car"));
+        System.out.println("countVowels(\"Technical Assessment\") = " + countVowels("Technical Assessment"));
+        System.out.println();
     }
 }

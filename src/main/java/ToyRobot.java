@@ -60,7 +60,6 @@ public class ToyRobot {
         }
     }
 
-
     public static class Table {
         Coordinate[][] coordinates;
 
@@ -74,14 +73,14 @@ public class ToyRobot {
     }
 
     public static Table generateTable (int[] size) {
-        int row = size[0];
-        int col = size[1];
+        int width = size[0];
+        int height = size[1];
 
-        Coordinate[][] cords = new Coordinate[col][row];
+        Coordinate[][] cords = new Coordinate[width][height];
 
-        for (int y = 0; y < col; y++) {
-            for (int x = 0; x < row; x++) {
-                cords[y][x] = new Coordinate(x, y);
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                cords[x][y] = new Coordinate(x, y);
             }
         }
 
@@ -109,7 +108,8 @@ public class ToyRobot {
             String[] splitInstructions = instructions.split(" ");
 
             if (instructions.toLowerCase().contains("place")) {
-                boolean isValidDirection = Arrays.toString(directions).contains(splitInstructions[splitInstructions.length - 1].toLowerCase());
+                String direction = splitInstructions[splitInstructions.length - 1].toLowerCase();
+                boolean isValidDirection = Arrays.asList(directions).contains(direction);
 
                 if (isValidDirection) {
                     String[] coords = splitInstructions[1].split(",");
@@ -124,7 +124,7 @@ public class ToyRobot {
 
                     robot.setX_Coordinate(x_Coordinate);
                     robot.setY_Coordinate(y_Coordinate);
-                    robot.setFacing(splitInstructions[splitInstructions.length - 1]);
+                    robot.setFacing(direction);
                     robot.setIsOnTable(true);
                 }
 
@@ -180,15 +180,14 @@ public class ToyRobot {
         }
     }
 
-
     public static boolean isWithinBounds(int newX_Coordinate, int newY_Coordinate, Table table) {
         Coordinate[][] tableCoordinates = table.getCoordinates();
 
-        int y = tableCoordinates.length;
-        int x = tableCoordinates[0].length;
+        int width = tableCoordinates.length;
+        int height = tableCoordinates[0].length;
 
-        boolean isXWithinBounds = newX_Coordinate >= 0 && newX_Coordinate < x;
-        boolean isYWithinBounds = newY_Coordinate >= 0 && newY_Coordinate < y;
+        boolean isXWithinBounds = newX_Coordinate >= 0 && newX_Coordinate < width;
+        boolean isYWithinBounds = newY_Coordinate >= 0 && newY_Coordinate < height;
 
         return isXWithinBounds && isYWithinBounds;
     }

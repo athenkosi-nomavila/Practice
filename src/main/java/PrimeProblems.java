@@ -100,12 +100,12 @@ public class PrimeProblems {
     }
 
     public static void run() {
-        IO.println("===== PRIMES =====");
-        IO.println("isPrime(29) = " + isPrime(29) + ", isPrime(30) = " + isPrime(30));
-        IO.println("primesUpTo(30) = " + primesUpTo(30));
-        IO.println("countPrimes(100) = " + countPrimes(100));
-        IO.println("primeFactors(84) = " + primeFactors(84));
-        IO.println("nthPrime(10) = " + nthPrime(10));
-        IO.println();
+        System.out.println("===== PRIMES =====");
+        System.out.println("isPrime(29) = " + isPrime(29) + ", isPrime(30) = " + isPrime(30));
+        System.out.println("primesUpTo(30) = " + primesUpTo(30));
+        System.out.println("countPrimes(100) = " + countPrimes(100));
+        System.out.println("primeFactors(84) = " + primeFactors(84));
+        System.out.println("nthPrime(10) = " + nthPrime(10));
+        System.out.println();
     }
 }

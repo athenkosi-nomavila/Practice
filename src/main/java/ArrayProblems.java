@@ -54,19 +54,19 @@ public class ArrayProblems {
     }
 
     public static void run() {
-        IO.println("===== ARRAYS =====");
+        System.out.println("===== ARRAYS =====");
 
-        IO.println("findMax([3, 9, 2, 7]) = " + findMax(new int[]{3, 9, 2, 7}));
-        IO.println("findMax([-5, -2, -8]) = " + findMax(new int[]{-5, -2, -8}));
+        System.out.println("findMax([3, 9, 2, 7]) = " + findMax(new int[]{3, 9, 2, 7}));
+        System.out.println("findMax([-5, -2, -8]) = " + findMax(new int[]{-5, -2, -8}));
 
         int[] a = {1, 2, 3, 4, 5};
         reverse(a);
-        IO.println("reverse([1, 2, 3, 4, 5]) = " + Arrays.toString(a));
+        System.out.println("reverse([1, 2, 3, 4, 5]) = " + Arrays.toString(a));
 
         int[] b = {0, 1, 0, 3, 12};
         moveZeros(b);
-        IO.println("moveZeros([0, 1, 0, 3, 12]) = " + Arrays.toString(b));
+        System.out.println("moveZeros([0, 1, 0, 3, 12]) = " + Arrays.toString(b));
 
-        IO.println();
+        System.out.println();
     }
 }
