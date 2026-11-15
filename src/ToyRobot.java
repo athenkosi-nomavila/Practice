@@ -105,10 +105,11 @@ public class ToyRobot {
     public static void runRobot( Table table) {
         Robot robot = new Robot();
         robot.setIsOnTable(false);
-        String[] directions = new String[] {"North, East, South, West"};
+        String[] directions = new String[] {"north, east, south, west"};
+
+        Scanner sc = new Scanner(System.in);
 
         while(true) {
-            Scanner sc = new Scanner(System.in);
 
             System.out.print("Enter command: ");
             String instructions = sc.nextLine();
@@ -120,27 +121,63 @@ public class ToyRobot {
             String[] splitInstructions = instructions.split(" ");
 
             if (instructions.toLowerCase().contains("place")) {
-                String[] coords = splitInstructions[1].split(",");
+                boolean isValidDirection = Arrays.toString(directions).contains(splitInstructions[splitInstructions.length - 1].toLowerCase());
 
-                int x_Coordinate = Integer.parseInt(coords[0]);
-                int y_Coordinate = Integer.parseInt(coords[1]);
+                if (isValidDirection) {
+                    String[] coords = splitInstructions[1].split(",");
 
-                robot.setX_Coordinate(x_Coordinate);
-                robot.setY_Coordinate(y_Coordinate);
-                robot.setFacing(splitInstructions[splitInstructions.length - 1]);
-                robot.setIsOnTable(true);
+                    int x_Coordinate = Integer.parseInt(coords[0]);
+                    int y_Coordinate = Integer.parseInt(coords[1]);
+
+                    if (!isWithinBounds(x_Coordinate, y_Coordinate, table)) {
+                        System.out.println("Position is off the table");
+                        continue;
+                    }
+
+                    robot.setX_Coordinate(x_Coordinate);
+                    robot.setY_Coordinate(y_Coordinate);
+                    robot.setFacing(splitInstructions[splitInstructions.length - 1]);
+                    robot.setIsOnTable(true);
+                }
 
             } else if (instructions.toLowerCase().contains("report") && robot.getIsOnTable()) {
                 System.out.println(robot.getReport());
             } else if (instructions.toLowerCase().contains("move") && robot.getIsOnTable()) {
+                int newX_Coordinate = robot.getX_Coordinate();
+                int newY_Coordinate = robot.getY_Coordinate();
+
                 if (robot.getFacing().equalsIgnoreCase("north")) {
-                    robot.setY_Coordinate(robot.y_Coordinate +1);
+                    newY_Coordinate = newY_Coordinate + 1;
+                } else if (robot.getFacing().equalsIgnoreCase("east")) {
+                    newX_Coordinate = newX_Coordinate + 1;
+                } else if (robot.getFacing().equalsIgnoreCase("south")) {
+                    newY_Coordinate = newY_Coordinate - 1;
+                } else if (robot.getFacing().equalsIgnoreCase("west")) {
+                    newX_Coordinate = newX_Coordinate - 1;
+                }
+
+                if (isWithinBounds(newX_Coordinate, newY_Coordinate, table)) {
+                    robot.setX_Coordinate(newX_Coordinate);
+                    robot.setY_Coordinate(newY_Coordinate);
+                } else {
+                    System.out.println("Robot would fall off the table");
                 }
             }
         }
     }
 
 
+    public static boolean isWithinBounds(int newX_Coordinate, int newY_Coordinate, Table table) {
+        Coordinate[][] tableCoordinates = table.getCoordinates();
+
+        int y = tableCoordinates.length;
+        int x = tableCoordinates[0].length;
+
+        boolean isXWithinBounds = newX_Coordinate >= 0 && newX_Coordinate < x;
+        boolean isYWithinBounds = newY_Coordinate >= 0 && newY_Coordinate < y;
+
+        return isXWithinBounds && isYWithinBounds;
+    }
 
     public static void main(String[] args) {
         Table table = generateTable(new int[]{5, 5});
