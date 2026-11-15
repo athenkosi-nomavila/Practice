@@ -2,18 +2,6 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class ToyRobot {
-    /*
-    5x5 box
-    PLACE X,Y,Facing
-    MOVE by 1
-    LEFT
-    RIGHT
-    REPORT X,Y, facing
-
-    Doesn't move before being placed
-    Doesn't move out of the boarders
-     */
-
     public static class Robot {
         int x_Coordinate;
         int y_Coordinate;
@@ -105,7 +93,7 @@ public class ToyRobot {
     public static void runRobot( Table table) {
         Robot robot = new Robot();
         robot.setIsOnTable(false);
-        String[] directions = new String[] {"north, east, south, west"};
+        String[] directions = new String[] {"north", "east", "south", "west"};
 
         Scanner sc = new Scanner(System.in);
 
@@ -162,6 +150,32 @@ public class ToyRobot {
                 } else {
                     System.out.println("Robot would fall off the table");
                 }
+            } else if (robot.getIsOnTable() && (instructions.toLowerCase().contains("left") || instructions.toLowerCase().contains("right"))) {
+                int dile;
+                if (robot.getFacing().equalsIgnoreCase("east")) {
+                    dile = 1;
+                } else if (robot.getFacing().equalsIgnoreCase("south")) {
+                    dile = 2;
+                } else if (robot.getFacing().equalsIgnoreCase("west")) {
+                    dile = 3;
+                } else {
+                    dile = 0;
+                }
+
+                if (instructions.toLowerCase().contains("left")) {
+                    dile--;
+                    if (dile < 0) {
+                        dile = 3;
+                        robot.setFacing(directions[dile]);
+                    }
+                } else if (instructions.toLowerCase().contains("right")) {
+                    dile++;
+                    if (dile > 3) {
+                        dile = 0;
+                        robot.setFacing(directions[dile]);
+                    }
+                }
+                robot.setFacing(directions[dile]);
             }
         }
     }
