@@ -6,12 +6,9 @@ public class ToyRobot {
         int x_Coordinate;
         int y_Coordinate;
         String facing;
-        String report;
-        boolean isOnTable;
 
-        public String getReport() { //TODO remove report from robot
-            setReport();
-            return report;
+        public String getReport() {
+            return getX_Coordinate() +","+ getY_Coordinate() +","+ getFacing();
         }
 
         public int getX_Coordinate() {
@@ -26,8 +23,6 @@ public class ToyRobot {
             return facing;
         }
 
-        public boolean getIsOnTable() {return isOnTable;}
-
         public void setX_Coordinate(int x_Coordinate) {
             this.x_Coordinate = x_Coordinate;
         }
@@ -40,58 +35,40 @@ public class ToyRobot {
             this.facing = facing;
         }
 
-        public void setReport() {
-
-            this.report = getX_Coordinate() +","+ getY_Coordinate() +","+ getFacing();
-        }
-
-        public void setIsOnTable(boolean isOnTable) {
-            this.isOnTable = isOnTable;
-        }
-    }
-
-    public static class Coordinate {
-        final int x;
-        final int y;
-
-        public Coordinate(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
     }
 
     public static class Table {
-        Coordinate[][] coordinates; //TODO Question??
+        final int width;
+        final int height;
+        boolean isRobotOnTable;
 
-        public Coordinate[][] getCoordinates() {
-            return coordinates;
+        public Table(int width, int height) {
+            this.width = width;
+            this.height = height;
         }
 
-        public void setCoordinates(Coordinate[][] coordinates) {
-            this.coordinates = coordinates;
+        public int getWidth() {
+            return width;
+        }
+
+        public int getHeight() {
+            return height;
+        }
+
+        public boolean getIsRobotOnTable() {return isRobotOnTable;}
+
+        public void setIsRobotOnTable(boolean isOnTable) {
+            this.isRobotOnTable = isOnTable;
         }
     }
 
-    public static Table generateTable (int[] size) {
-        int width = size[0];
-        int height = size[1];
-
-        Coordinate[][] cords = new Coordinate[width][height];
-
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                cords[x][y] = new Coordinate(x, y);
-            }
-        }
-
-        Table table = new Table();
-        table.setCoordinates(cords);
-        return table;
+    public static Table generateTable(int[] size) {
+        return new Table(size[0], size[1]);
     }
 
     public static void runRobot( Table table) {
         Robot robot = new Robot();
-        robot.setIsOnTable(false);
+        table.setIsRobotOnTable(false);
         String[] directions = new String[] {"north", "east", "south", "west"};
 
         Scanner sc = new Scanner(System.in);
@@ -141,12 +118,12 @@ public class ToyRobot {
                     robot.setX_Coordinate(x_Coordinate);
                     robot.setY_Coordinate(y_Coordinate);
                     robot.setFacing(originalInstructions[2]);
-                    robot.setIsOnTable(true);
+                    table.setIsRobotOnTable(true);
                 }
 
-            } else if (command.equals("report") && robot.getIsOnTable()) {
+            } else if (command.equals("report") && table.getIsRobotOnTable()) {
                 System.out.println(robot.getReport());
-            } else if (command.equals("move") && robot.getIsOnTable()) {
+            } else if (command.equals("move") && table.getIsRobotOnTable()) {
                 int newX_Coordinate = robot.getX_Coordinate();
                 int newY_Coordinate = robot.getY_Coordinate();
 
@@ -166,7 +143,7 @@ public class ToyRobot {
                 } else {
                     System.out.println("Robot would fall off the table");
                 }
-            } else if (robot.getIsOnTable() && (command.equals("left") || command.equals("right"))) {
+            } else if (table.getIsRobotOnTable() && (command.equals("left") || command.equals("right"))) {
                 int dile;
                 if (robot.getFacing().equalsIgnoreCase("east")) {
                     dile = 1;
@@ -184,7 +161,7 @@ public class ToyRobot {
                         dile = 3;
                         robot.setFacing(directions[dile]);
                     }
-                } else if (command.equals("right")) {
+                } else {
                     dile++;
                     if (dile > 3) {
                         dile = 0;
@@ -197,10 +174,8 @@ public class ToyRobot {
     }
 
     public static boolean isWithinBounds(int newX_Coordinate, int newY_Coordinate, Table table) {
-        Coordinate[][] tableCoordinates = table.getCoordinates();
-
-        int width = tableCoordinates.length;
-        int height = tableCoordinates[0].length;
+        int width = table.getWidth();
+        int height = table.getHeight();
 
         boolean isXWithinBounds = newX_Coordinate >= 0 && newX_Coordinate < width;
         boolean isYWithinBounds = newY_Coordinate >= 0 && newY_Coordinate < height;
