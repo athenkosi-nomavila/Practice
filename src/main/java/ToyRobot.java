@@ -9,7 +9,7 @@ public class ToyRobot {
         String report;
         boolean isOnTable;
 
-        public String getReport() {
+        public String getReport() { //TODO remove report from robot
             setReport();
             return report;
         }
@@ -61,7 +61,7 @@ public class ToyRobot {
     }
 
     public static class Table {
-        Coordinate[][] coordinates;
+        Coordinate[][] coordinates; //TODO Question??
 
         public Coordinate[][] getCoordinates() {
             return coordinates;
@@ -105,17 +105,33 @@ public class ToyRobot {
                 break;
             }
 
-            String[] splitInstructions = instructions.split(" ");
+            String[] originalInstructions = instructions.trim().split(" ");
+            String command = instructions.trim().toLowerCase();
+            String[] splitInstructions = command.split(" ");
 
-            if (instructions.toLowerCase().contains("place")) {
+            if (splitInstructions[0].equals("place")) {
                 String direction = splitInstructions[splitInstructions.length - 1].toLowerCase();
                 boolean isValidDirection = Arrays.asList(directions).contains(direction);
 
                 if (isValidDirection) {
+                    if (splitInstructions.length != 3) {
+                        continue;
+                    }
+
                     String[] coords = splitInstructions[1].split(",");
 
-                    int x_Coordinate = Integer.parseInt(coords[0]);
-                    int y_Coordinate = Integer.parseInt(coords[1]);
+                    if (coords.length != 2) {
+                        continue;
+                    }
+
+                    int x_Coordinate;
+                    int y_Coordinate;
+                    try {
+                        x_Coordinate = Integer.parseInt(coords[0]);
+                        y_Coordinate = Integer.parseInt(coords[1]);
+                    } catch (NumberFormatException e) {
+                        continue;
+                    }
 
                     if (!isWithinBounds(x_Coordinate, y_Coordinate, table)) {
                         System.out.println("Position is off the table");
@@ -124,13 +140,13 @@ public class ToyRobot {
 
                     robot.setX_Coordinate(x_Coordinate);
                     robot.setY_Coordinate(y_Coordinate);
-                    robot.setFacing(direction);
+                    robot.setFacing(originalInstructions[2]);
                     robot.setIsOnTable(true);
                 }
 
-            } else if (instructions.toLowerCase().contains("report") && robot.getIsOnTable()) {
+            } else if (command.equals("report") && robot.getIsOnTable()) {
                 System.out.println(robot.getReport());
-            } else if (instructions.toLowerCase().contains("move") && robot.getIsOnTable()) {
+            } else if (command.equals("move") && robot.getIsOnTable()) {
                 int newX_Coordinate = robot.getX_Coordinate();
                 int newY_Coordinate = robot.getY_Coordinate();
 
@@ -150,7 +166,7 @@ public class ToyRobot {
                 } else {
                     System.out.println("Robot would fall off the table");
                 }
-            } else if (robot.getIsOnTable() && (instructions.toLowerCase().contains("left") || instructions.toLowerCase().contains("right"))) {
+            } else if (robot.getIsOnTable() && (command.equals("left") || command.equals("right"))) {
                 int dile;
                 if (robot.getFacing().equalsIgnoreCase("east")) {
                     dile = 1;
@@ -162,20 +178,20 @@ public class ToyRobot {
                     dile = 0;
                 }
 
-                if (instructions.toLowerCase().contains("left")) {
+                if (command.equals("left")) {
                     dile--;
                     if (dile < 0) {
                         dile = 3;
                         robot.setFacing(directions[dile]);
                     }
-                } else if (instructions.toLowerCase().contains("right")) {
+                } else if (command.equals("right")) {
                     dile++;
                     if (dile > 3) {
                         dile = 0;
                         robot.setFacing(directions[dile]);
                     }
                 }
-                robot.setFacing(directions[dile]);
+                robot.setFacing(directions[dile].toUpperCase());
             }
         }
     }

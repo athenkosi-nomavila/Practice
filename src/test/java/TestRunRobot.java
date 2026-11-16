@@ -53,6 +53,59 @@ public class TestRunRobot {
     }
 
     @Test
+    void testPlaceWithMissingCoordinateIsIgnored() {
+        assertEquals("", run("place 1 north", "report"));
+    }
+
+    @Test
+    void testPlaceWithNoArgumentsIsIgnored() {
+        assertEquals("", run("place", "report"));
+    }
+
+    @Test
+    void testPlaceWithNonNumericCoordinatesIsIgnored() {
+        assertEquals("", run("place a,b north", "report"));
+    }
+
+    @Test
+    void testCommandWithExtraWordsIsIgnored() {
+        assertEquals("2,2,north", run("place 2,2 north", "move left", "report"));
+    }
+
+    @Test
+    void testReportWithExtraWordsIsIgnored() {
+        assertEquals("", run("place 2,2 north", "report left"));
+    }
+
+    @Test
+    void testCommandsAreCaseInsensitive() {
+        assertEquals("0,1,NORTH", run("PLACE 0,0 NORTH", "MOVE", "REPORT"));
+    }
+
+    @Test
+    void testReportKeepsDirectionAsTyped() {
+        assertEquals("1,1,North", run("place 1,1 North", "report"));
+        assertEquals("1,1,north", run("place 1,1 north", "report"));
+        assertEquals("1,1,NORTH", run("place 1,1 NORTH", "report"));
+    }
+
+    @Test
+    void testDirectionIsUpperCaseAfterTurn() {
+        assertEquals("1,1,WEST", run("place 1,1 north", "left", "report"));
+    }
+
+    @Test
+    void testInvalidSecondPlaceKeepsRobotWhereItWas() {
+        assertEquals("Position is off the table\n0,0,NORTH",
+                run("PLACE 0,0 NORTH", "PLACE 9,9 SOUTH", "REPORT").replace("\r\n", "\n"));
+    }
+
+    @Test
+    void testPlaceMoveReport() {
+        assertEquals("0,1,NORTH", run("PLACE 0,0 NORTH", "MOVE", "REPORT"));
+    }
+
+    @Test
     void testPlaceAgainMovesRobot() {
         assertEquals("3,4,south", run("place 0,0 north", "place 3,4 south", "report"));
     }
@@ -74,24 +127,24 @@ public class TestRunRobot {
 
     @Test
     void testTurnLeft() {
-        assertEquals("0,0,west", run("place 0,0 north", "left", "report"));
-        assertEquals("0,0,south", run("place 0,0 west", "left", "report"));
+        assertEquals("0,0,WEST", run("place 0,0 north", "left", "report"));
+        assertEquals("0,0,SOUTH", run("place 0,0 west", "left", "report"));
     }
 
     @Test
     void testTurnRight() {
-        assertEquals("0,0,east", run("place 0,0 north", "right", "report"));
-        assertEquals("0,0,north", run("place 0,0 west", "right", "report"));
+        assertEquals("0,0,EAST", run("place 0,0 north", "right", "report"));
+        assertEquals("0,0,NORTH", run("place 0,0 west", "right", "report"));
     }
 
     @Test
     void testFullCircle() {
-        assertEquals("0,0,north", run("place 0,0 north", "right", "right", "right", "right", "report"));
-        assertEquals("0,0,north", run("place 0,0 north", "left", "left", "left", "left", "report"));
+        assertEquals("0,0,NORTH", run("place 0,0 north", "right", "right", "right", "right", "report"));
+        assertEquals("0,0,NORTH", run("place 0,0 north", "left", "left", "left", "left", "report"));
     }
 
     @Test
     void testCommands() {
-        assertEquals("3,3,north", run("place 1,2 east", "move", "move", "left", "move", "report"));
+        assertEquals("3,3,NORTH", run("place 1,2 east", "move", "move", "left", "move", "report"));
     }
 }

@@ -94,3 +94,32 @@ production. It is not required to provide any graphical output showing the
 movement of the toy robot.
 
 Please do not put your name in any of the submitted code since this makes it harder for us to review your submission anonymously.
+
+#TESTS
+------
+
+  PLACE 1 NORTH
+
+  PLACE a,b NORTH
+  
+  PLACE 2,2 NORTH
+
+  MOVE LEFT
+
+  REPORT
+  
+  PLACE 2,2 NORTH
+
+  REPORT LEFT
+  
+  PLACE 0,0 NORTH
+
+  PLACE 9,9 SOUTH
+
+  REPORT
+
+  PLACE 0,0 NORTH
+
+  MOVE
+
+  REPORT
